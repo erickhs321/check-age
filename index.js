@@ -1,18 +1,24 @@
-const express = require("express");
-const nunjucks = require("nunjucks");
+const express = require('express')
+const nunjucks = require('nunjucks')
 
-const app = express();
+const app = express()
 
-nunjucks.configure("views", {
+nunjucks.configure('views', {
   autoescape: true,
   express: app,
   watch: true
-});
+})
 
-app.set("view engine", "njk");
+app.use(express.urlencoded({ extendend: false }))
 
-app.get("/", (req, res) => {
-  return res.render("index");
-});
+app.set('view engine', 'njk')
 
-app.listen(3000);
+app.get('/', (req, res) => {
+  return res.render('index')
+})
+
+app.post('/check', (req, res) => {
+  console.log(req.body)
+})
+
+app.listen(3000)
