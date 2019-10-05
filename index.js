@@ -1,9 +1,18 @@
 const express = require("express");
+const nunjucks = require("nunjucks");
 
 const app = express();
 
+nunjucks.configure("views", {
+  autoescape: true,
+  express: app,
+  watch: true
+});
+
+app.set("view engine", "njk");
+
 app.get("/", (req, res) => {
-  return res.send("Olá mundo");
+  return res.render("index");
 });
 
 app.listen(3000);
