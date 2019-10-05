@@ -1,5 +1,6 @@
 const express = require('express')
 const nunjucks = require('nunjucks')
+const bodyParser = require('body-parser')
 
 const app = express()
 
@@ -9,7 +10,7 @@ nunjucks.configure('views', {
   watch: true
 })
 
-app.use(express.urlencoded({ extendend: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 app.set('view engine', 'njk')
 
@@ -17,12 +18,18 @@ app.get('/', (req, res) => {
   return res.render('index')
 })
 
-app.get('/major', (req, res) => {
+const checkAge = (req, res, next) => {
+  const { age } = req.query
+
+  age ? next() : res.redirect('/')
+}
+
+app.get('/major', checkAge, (req, res) => {
   const { age } = req.query
   return res.render('major', { age })
 })
 
-app.get('/minor', (req, res) => {
+app.get('/minor', checkAge, (req, res) => {
   const { age } = req.query
   return res.render('minor', { age })
 })
